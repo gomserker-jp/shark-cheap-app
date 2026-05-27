@@ -1,25 +1,27 @@
-This is a Kotlin Multiplatform project targeting iOS.
+### セットアップ（日本語）
 
-* [/iosApp](./iosApp/SharkCheapApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+このプロジェクトをローカルで動かすための最小手順です。
 
-* [/sharedLogic](./sharedLogic/src) is for the code that will be shared between app targets in the project.
-  The most important subfolder is [commonMain](./sharedLogic/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+- クローン
+  - `git clone <YOUR_REPOSITORY_URL>`
+  - `cd SharkCheap`
 
-### Running the apps
+- 必須ツール
+  - Xcode
+  - Java (JDK 17+ 推奨)
+  - fastlane
+  - xcodegen（`fastlane ios setup` 実行時に自動インストール）
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+- 初回実行手順
+  - 実行コマンド:
+```bash
+fastlane ios setup
+fastlane ios build_ios
+```
 
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
-- xcodegen (optional): from `/iosApp`, run `xcodegen generate` to regenerate `SharkCheapApp.xcodeproj` from `project.yml`.
-
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- iOS tests: `./gradlew :sharedLogic:iosSimulatorArm64Test`
+- fastlane が未インストールの場合（初回のみ）
+```bash
+brew install fastlane
+```
 
 ---
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…

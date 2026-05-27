@@ -1,0 +1,56 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Install/check local tools and generate Xcode project"
+  lane :setup do
+    sh("chmod +x ./scripts/setup_tools.sh")
+    sh("./scripts/setup_tools.sh")
+    sh("cd iosApp && xcodegen generate")
+  end
+
+  desc "Check local tooling and regenerate Xcode project"
+  lane :bootstrap do
+    sh("java -version")
+    sh("xcodegen --version")
+    sh("cd iosApp && xcodegen generate")
+  end
+
+  desc "Regenerate SharkCheapApp.xcodeproj from xcodegen spec"
+  lane :generate_xcodeproj do
+    sh("cd iosApp && xcodegen generate")
+  end
+
+  desc "Run shared Kotlin iOS tests"
+  lane :test_shared do
+    sh("./gradlew :sharedLogic:iosSimulatorArm64Test")
+  end
+
+  desc "Build iOS app for Simulator"
+  lane :build_ios do
+    sh("xcodebuild -project iosApp/SharkCheapApp.xcodeproj -scheme SharkCheapApp -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build")
+  end
+
+  desc "Run project generation, shared tests, and iOS build"
+  lane :ci do
+    bootstrap
+    test_shared
+    build_ios
+  end
+
+  desc "Bump MARKETING_VERSION and CURRENT_PROJECT_VERSION in Config.xcconfig"
+  lane :bump_version do |options|
+    marketing = options[:marketing]
+    build = options[:build]
+
+    UI.user_error!("Pass marketing:<version> (e.g. marketing:1.2.0)") if marketing.to_s.empty?
+    UI.user_error!("Pass build:<number> (e.g. build:42)") if build.to_s.empty?
+
+    path = "iosApp/Configuration/Config.xcconfig"
+    content = File.read(path)
+    content.gsub!(/^MARKETING_VERSION=.*/, "MARKETING_VERSION=#{marketing}")
+    content.gsub!(/^CURRENT_PROJECT_VERSION=.*/, "CURRENT_PROJECT_VERSION=#{build}")
+    File.write(path, content)
+
+    UI.success("Updated #{path} -> MARKETING_VERSION=#{marketing}, CURRENT_PROJECT_VERSION=#{build}")
+  end
+end
