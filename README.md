@@ -12,6 +12,7 @@ This is a Kotlin Multiplatform project targeting iOS.
 Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
 
 - iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- xcodegen (optional): from `/iosApp`, run `xcodegen generate` to regenerate `SharkCheapApp.xcodeproj` from `project.yml`.
 
 ### Running tests
 
