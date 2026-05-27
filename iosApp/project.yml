@@ -8,6 +8,11 @@ configs:
   Debug: debug
   Release: release
 
+packages:
+  ComposableArchitecture:
+    url: https://github.com/pointfreeco/swift-composable-architecture
+    exactVersion: 1.25.5
+
 settingGroups:
   appBase:
     CODE_SIGN_STYLE: Automatic
@@ -23,13 +28,16 @@ settingGroups:
     INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: "YES"
     INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown"
     LD_RUNPATH_SEARCH_PATHS:
       - $(inherited)
       - "@executable_path/Frameworks"
     SWIFT_VERSION: "6.0"
     SWIFT_EMIT_LOC_STRINGS: "YES"
     TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+    SUPPORTS_MACCATALYST: "NO"
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: "NO"
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: "NO"
     ENABLE_PREVIEWS: "YES"
     MARKETING_VERSION: $(MARKETING_VERSION)
     CURRENT_PROJECT_VERSION: $(CURRENT_PROJECT_VERSION)
@@ -48,9 +56,12 @@ targets:
     settings:
       groups:
         - appBase
+    dependencies:
+      - package: ComposableArchitecture
     preBuildScripts:
       - name: Compile Kotlin Framework
         shell: /bin/sh
+        basedOnDependencyAnalysis: false
         script: |
           if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
             echo "Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\""

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Git post-checkout args:
+#   $1: previous HEAD ref
+#   $2: new HEAD ref
+#   $3: 1 if branch checkout, 0 if file checkout
+is_branch_checkout="${3:-0}"
+
+if [ "$is_branch_checkout" != "1" ]; then
+  exit 0
+fi
+
+if ! command -v xcodegen >/dev/null 2>&1; then
+  echo "[post-checkout] xcodegen not found. Skipping project generation."
+  exit 0
+fi
+
+repo_root="$(git rev-parse --show-toplevel)"
+ios_dir="$repo_root/iosApp"
+
+if [ -f "$ios_dir/project.yml" ]; then
+  echo "[post-checkout] Running xcodegen generate..."
+  (cd "$ios_dir" && xcodegen generate)
+fi
+

@@ -3,6 +3,7 @@ default_platform(:ios)
 platform :ios do
   desc "Install/check local tools and generate Xcode project"
   lane :setup do
+    sh("git config core.hooksPath .githooks")
     sh("chmod +x ./scripts/setup_tools.sh")
     sh("./scripts/setup_tools.sh")
     sh("cd iosApp && xcodegen generate")

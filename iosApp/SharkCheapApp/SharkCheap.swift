@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct iOSApp: App {
+struct SharkCheap: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

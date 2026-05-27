@@ -19,6 +19,8 @@ fastlane ios setup
 fastlane ios build_ios
 ```
 
+- `fastlane ios setup` は `.githooks/post-checkout` も自動で有効化します。
+
 - fastlane が未インストールの場合（初回のみ）
 ```bash
 brew install fastlane
