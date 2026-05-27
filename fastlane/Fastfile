@@ -1,11 +1,21 @@
+require "shellwords"
+
 default_platform(:ios)
+
+REPO_ROOT = File.expand_path("..", __dir__)
 
 def resolve_ios_dir(options = {})
   explicit = options[:ios_dir] || ENV["IOS_APP_DIR"]
-  return explicit unless explicit.to_s.empty?
-  return "iosApp" if Dir.exist?("iosApp")
+  unless explicit.to_s.empty?
+    return explicit.start_with?("/") ? explicit : File.join(REPO_ROOT, explicit)
+  end
 
-  spec = Dir.glob("**/project.yml").reject { |p| p.start_with?("build/") }.first
+  default_ios_dir = File.join(REPO_ROOT, "iosApp")
+  return default_ios_dir if Dir.exist?(default_ios_dir)
+
+  spec = Dir.glob(File.join(REPO_ROOT, "**/project.yml"))
+            .reject { |p| p.include?("/build/") }
+            .first
   return File.dirname(spec) unless spec.nil?
 
   UI.user_error!("Could not find iOS project directory. Pass ios_dir:<path> (e.g. bundle exec fastlane ios setup ios_dir:iosApp).")
@@ -15,11 +25,12 @@ platform :ios do
   desc "Install/check local tools and generate Xcode project"
   lane :setup do |options|
     ios_dir = resolve_ios_dir(options)
-    sh("git config core.hooksPath .githooks")
+    sh("git -C #{REPO_ROOT.shellescape} config core.hooksPath .githooks")
 
-    if File.exist?("./scripts/setup_tools.sh")
-      sh("chmod +x ./scripts/setup_tools.sh")
-      sh("./scripts/setup_tools.sh")
+    setup_script = File.join(REPO_ROOT, "scripts/setup_tools.sh")
+    if File.exist?(setup_script)
+      sh("chmod +x #{setup_script.shellescape}")
+      sh(setup_script.shellescape)
     else
       sh("command -v brew >/dev/null 2>&1 || (echo 'Homebrew is required.' && exit 1)")
       sh("command -v java >/dev/null 2>&1 || brew install --cask temurin")
@@ -49,7 +60,7 @@ platform :ios do
 
   desc "Run shared Kotlin iOS tests"
   lane :test_shared do
-    sh("./gradlew :sharedLogic:iosSimulatorArm64Test")
+    sh("#{File.join(REPO_ROOT, 'gradlew').shellescape} :sharedLogic:iosSimulatorArm64Test")
   end
 
   desc "Build iOS app for Simulator"
