@@ -4,8 +4,18 @@ platform :ios do
   desc "Install/check local tools and generate Xcode project"
   lane :setup do
     sh("git config core.hooksPath .githooks")
-    sh("chmod +x ./scripts/setup_tools.sh")
-    sh("./scripts/setup_tools.sh")
+    if File.exist?("./scripts/setup_tools.sh")
+      sh("chmod +x ./scripts/setup_tools.sh")
+      sh("./scripts/setup_tools.sh")
+    else
+      sh("command -v brew >/dev/null 2>&1 || (echo 'Homebrew is required.' && exit 1)")
+      sh("command -v java >/dev/null 2>&1 || brew install --cask temurin")
+      sh("command -v xcodegen >/dev/null 2>&1 || brew install xcodegen")
+      sh("command -v fastlane >/dev/null 2>&1 || brew install fastlane")
+      sh("java -version")
+      sh("xcodegen --version")
+      sh("fastlane --version")
+    end
     sh("cd iosApp && xcodegen generate")
   end
 
