@@ -66,7 +66,7 @@ platform :ios do
   desc "Build iOS app for Simulator"
   lane :build_ios do |options|
     ios_dir = resolve_ios_dir(options)
-    sh("xcodebuild -project #{File.join(ios_dir, 'SharkCheapApp.xcodeproj').shellescape} -scheme SharkCheapApp -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build")
+    sh("xcodebuild -project #{File.join(ios_dir, 'SharkCheapApp.xcodeproj').shellescape} -scheme SharkCheapApp -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -skipMacroValidation build")
   end
 
   desc "Run project generation, shared tests, and iOS build"
