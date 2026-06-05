@@ -60,13 +60,15 @@ platform :ios do
 
   desc "Run shared Kotlin iOS tests"
   lane :test_shared do
-    sh("#{File.join(REPO_ROOT, 'gradlew').shellescape} :sharedLogic:iosSimulatorArm64Test")
+    simulator_test_task = `uname -m`.strip == "arm64" ? "iosSimulatorArm64Test" : "iosX64Test"
+    sh("cd #{REPO_ROOT.shellescape} && ./gradlew :sharedLogic:#{simulator_test_task} --info")
   end
 
   desc "Build iOS app for Simulator"
   lane :build_ios do |options|
     ios_dir = resolve_ios_dir(options)
-    sh("xcodebuild -project #{File.join(ios_dir, 'SharkCheapApp.xcodeproj').shellescape} -scheme SharkCheapApp -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build")
+    derived_data_path = File.join(REPO_ROOT, "build/DerivedData")
+    sh("xcodebuild -project #{File.join(ios_dir, 'SharkCheapApp.xcodeproj').shellescape} -scheme SharkCheapApp -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath #{derived_data_path.shellescape} -skipMacroValidation -showBuildTimingSummary build")
   end
 
   desc "Run project generation, shared tests, and iOS build"
