@@ -1,0 +1,13 @@
+xcassets:
+  inputs:
+    - ../Resources/Assets.xcassets
+  outputs:
+    - templateName: swift5
+      output: ${DERIVED_SOURCES_DIR}/Asset+Generated.swift
+
+strings:
+  inputs:
+    - ../Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: ${DERIVED_SOURCES_DIR}/L10n+Generated.swift

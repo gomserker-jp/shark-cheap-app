@@ -35,9 +35,11 @@ platform :ios do
       sh("command -v brew >/dev/null 2>&1 || (echo 'Homebrew is required.' && exit 1)")
       sh("command -v java >/dev/null 2>&1 || brew install --cask temurin")
       sh("command -v xcodegen >/dev/null 2>&1 || brew install xcodegen")
+      sh("command -v swiftgen >/dev/null 2>&1 || brew install swiftgen")
       sh("command -v fastlane >/dev/null 2>&1 || brew install fastlane")
       sh("java -version")
       sh("xcodegen --version")
+      sh("swiftgen --version")
       sh("fastlane --version")
     end
 
@@ -49,6 +51,7 @@ platform :ios do
     ios_dir = resolve_ios_dir(options)
     sh("java -version")
     sh("xcodegen --version")
+    sh("swiftgen --version")
     sh("cd #{ios_dir.shellescape} && xcodegen generate")
   end
 

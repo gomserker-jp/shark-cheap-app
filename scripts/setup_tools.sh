@@ -24,11 +24,12 @@ require_command brew
 
 install_if_missing java "brew install --cask temurin"
 install_if_missing xcodegen "brew install xcodegen"
+install_if_missing swiftgen "brew install swiftgen"
 install_if_missing fastlane "brew install fastlane"
 
 echo
 echo "Tool versions:"
 java -version
 xcodegen --version
+swiftgen --version
 fastlane --version
-
