@@ -12,17 +12,24 @@ on:
 
 jobs:
   ios:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+          swift --version
 
       - name: Set up Java 26
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "26"
+          cache: gradle
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -30,9 +37,16 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: build/DerivedData/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('iosApp/SharkCheapApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
 
       - name: Run iOS CI lane
         run: bundle exec fastlane ios ci
-
