@@ -60,7 +60,8 @@ platform :ios do
 
   desc "Run shared Kotlin iOS tests"
   lane :test_shared do
-    sh("cd #{REPO_ROOT.shellescape} && ./gradlew :sharedLogic:iosSimulatorArm64Test --info")
+    simulator_test_task = `uname -m`.strip == "arm64" ? "iosSimulatorArm64Test" : "iosX64Test"
+    sh("cd #{REPO_ROOT.shellescape} && ./gradlew :sharedLogic:#{simulator_test_task} --info")
   end
 
   desc "Build iOS app for Simulator"
