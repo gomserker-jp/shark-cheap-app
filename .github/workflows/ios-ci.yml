@@ -48,7 +48,6 @@ jobs:
       - name: Install iOS build tools
         run: |
           brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
-          brew list swiftgen >/dev/null 2>&1 || brew install swiftgen
 
       - name: Run iOS CI lane
         run: bundle exec fastlane ios ci

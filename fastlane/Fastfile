@@ -51,7 +51,6 @@ platform :ios do
     ios_dir = resolve_ios_dir(options)
     sh("java -version")
     sh("xcodegen --version")
-    sh("swiftgen --version")
     sh("cd #{ios_dir.shellescape} && xcodegen generate")
   end
 
