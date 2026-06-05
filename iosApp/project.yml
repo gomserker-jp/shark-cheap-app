@@ -18,6 +18,9 @@ packages:
   Realm:
     url: https://github.com/realm/realm-swift.git
     exactVersion: 20.0.4
+  Lottie:
+    url: https://github.com/airbnb/lottie-ios.git
+    exactVersion: 4.6.0
 
 settingGroups:
   appBase:
@@ -55,6 +58,7 @@ targets:
       - path: SharkCheapApp
         excludes:
           - Info.plist
+      - path: Resources
     configFiles:
       Debug: Configuration/Config.xcconfig
       Release: Configuration/Config.xcconfig
