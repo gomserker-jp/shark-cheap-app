@@ -28,6 +28,7 @@ platform :ios do
     sh("git -C #{REPO_ROOT.shellescape} config core.hooksPath .githooks")
 
     setup_script = File.join(REPO_ROOT, "scripts/setup_tools.sh")
+    sh("cd #{REPO_ROOT.shellescape} && bundle install")
     if File.exist?(setup_script)
       sh("chmod +x #{setup_script.shellescape}")
       sh(setup_script.shellescape)
