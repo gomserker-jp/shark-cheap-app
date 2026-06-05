@@ -4,6 +4,9 @@ options:
   deploymentTarget:
     iOS: "18.2"
 
+fileGroups:
+  - swiftgen.yml
+  
 configs:
   Debug: debug
   Release: release
@@ -68,7 +71,38 @@ targets:
     dependencies:
       - package: ComposableArchitecture
       - package: Kingfisher
+      - package: Realm
+        product: RealmSwift
+      - package: Lottie
+        product: Lottie
     preBuildScripts:
+      - name: Generate SwiftGen Resources
+        shell: /bin/sh
+        basedOnDependencyAnalysis: true
+        inputFiles:
+          - $(SRCROOT)/Resources/Assets.xcassets
+          - $(SRCROOT)/Resources/en.lproj/Localizable.strings
+          - $(SRCROOT)/Resources/ko.lproj/Localizable.strings
+          - $(SRCROOT)/Resources/ja.lproj/Localizable.strings
+          - $(SRCROOT)/swiftgen.yml
+          - $(SRCROOT)/Templates/xcassets-swift6.stencil
+        outputFiles:
+          - $(SRCROOT)/SharkCheapApp/Generated/Asset+Generated.swift
+          - $(SRCROOT)/SharkCheapApp/Generated/L10n+Generated.swift
+        script: |
+          if [ -n "$CI" ]; then
+            exit 0
+          fi
+
+          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+          if ! command -v swiftgen >/dev/null 2>&1; then
+            echo "error: SwiftGen is required. Install it with 'brew install swiftgen'."
+            exit 1
+          fi
+
+          mkdir -p "$SRCROOT/SharkCheapApp/Generated"
+          swiftgen config run --config "$SRCROOT/swiftgen.yml"
       - name: Compile Kotlin Framework
         shell: /bin/sh
         basedOnDependencyAnalysis: false

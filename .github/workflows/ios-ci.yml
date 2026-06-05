@@ -45,8 +45,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
 
-      - name: Install XcodeGen
-        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+      - name: Install iOS build tools
+        run: |
+          brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
 
       - name: Run iOS CI lane
         run: bundle exec fastlane ios ci

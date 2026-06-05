@@ -1,0 +1,13 @@
+xcassets:
+  inputs:
+    - Resources/Assets.xcassets
+  outputs:
+    - templatePath: Templates/xcassets-swift6.stencil
+      output: SharkCheapApp/Generated/Asset+Generated.swift
+
+strings:
+  inputs:
+    - Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: SharkCheapApp/Generated/L10n+Generated.swift
