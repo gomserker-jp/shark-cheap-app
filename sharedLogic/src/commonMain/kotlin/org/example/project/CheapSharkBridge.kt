@@ -9,9 +9,15 @@ import org.example.project.data.remote.CheapSharkHttpClient
 import org.example.project.data.remote.CheapSharkJson
 import org.example.project.data.remote.model.response.DealResponse
 import org.example.project.data.remote.model.response.StoreResponse
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import org.example.project.domain.model.DealsPage
 import org.example.project.domain.model.DealsQuery
 import org.example.project.domain.model.Store
+import org.example.project.domain.model.StoreDealsCriteria
+import org.example.project.domain.model.StoreDealsSection
+import org.example.project.domain.model.StoreDisplayOrder
 import org.example.project.domain.model.TodaysSpecialDealsCriteria
 
 class CheapSharkBridge {
@@ -46,5 +52,25 @@ class CheapSharkBridge {
         return page.copy(
             deals = TodaysSpecialDealsCriteria.filterDeals(page.deals)
         )
+    }
+
+    suspend fun fetchStoreDealsSections(): List<StoreDealsSection> = coroutineScope {
+        val stores = StoreDisplayOrder.sort(fetchStores())
+        stores.map { store ->
+            async {
+                val page = fetchDeals(
+                    DealsQuery(
+                        storeIds = listOf(store.id),
+                        metacritic = StoreDealsCriteria.MIN_METACRITIC,
+                        pageNumber = 0,
+                    )
+                )
+                StoreDealsSection(
+                    store = store,
+                    deals = StoreDealsCriteria.filterDeals(page.deals),
+                )
+            }
+        }.awaitAll()
+            .filter { it.deals.isNotEmpty() }
     }
 }

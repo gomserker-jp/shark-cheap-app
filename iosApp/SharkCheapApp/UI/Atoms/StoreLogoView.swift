@@ -11,24 +11,42 @@ import SwiftUI
 struct StoreLogoView: View {
     let storeId: String
     let size: CGFloat
+    let logoURL: URL?
 
-    @State private var logoURL: URL?
+    @State private var resolvedLogoURL: URL?
+
+    init(storeId: String, size: CGFloat, logoURL: URL? = nil) {
+        self.storeId = storeId
+        self.size = size
+        self.logoURL = logoURL
+    }
 
     var body: some View {
         Group {
-            if let logoURL {
-                KFImage(logoURL)
+            if let resolvedLogoURL {
+                KFImage(resolvedLogoURL)
                     .fade(duration: 0.2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: size, height: size)
-                    .padding(4)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.gray.opacity(0.15))
+                    .frame(width: size, height: size)
             }
         }
-        .onAppear {
-            logoURL = StoreMasterRepository.logoURL(for: storeId)
+        .task(id: taskKey) {
+            if let logoURL {
+                resolvedLogoURL = logoURL
+            } else {
+                resolvedLogoURL = StoreMasterRepository.logoURL(for: storeId)
+            }
         }
+    }
+
+    private var taskKey: String {
+        "\(storeId)-\(logoURL?.absoluteString ?? "")"
     }
 }
 

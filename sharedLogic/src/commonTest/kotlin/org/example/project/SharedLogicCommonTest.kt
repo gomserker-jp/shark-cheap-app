@@ -6,6 +6,9 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import org.example.project.domain.model.Deal
 import org.example.project.domain.model.DealsQuery
+import org.example.project.domain.model.Store
+import org.example.project.domain.model.StoreDealsCriteria
+import org.example.project.domain.model.StoreDisplayOrder
 import org.example.project.domain.model.TodaysSpecialDealsCriteria
 import kotlin.test.assertTrue
 
@@ -81,6 +84,38 @@ class SharedLogicCommonTest {
     }
 
     @Test
+    fun storeDealsCriteria_savingsFilter_passesAboveThreshold() {
+        val deal = sampleDeal(savingsPercentage = 35.0)
+        val filtered = StoreDealsCriteria.filterDeals(listOf(deal))
+
+        assertEquals(1, filtered.size)
+    }
+
+    @Test
+    fun storeDealsCriteria_savingsFilter_rejectsBelowThreshold() {
+        val deal = sampleDeal(savingsPercentage = 25.0)
+        val filtered = StoreDealsCriteria.filterDeals(listOf(deal))
+
+        assertTrue(filtered.isEmpty())
+    }
+
+    @Test
+    fun storeDisplayOrder_sortsPriorityStoresFirstThenAlphabetically() {
+        val stores = listOf(
+            sampleStore(id = "31", name = "Fanatical"),
+            sampleStore(id = "7", name = "GOG"),
+            sampleStore(id = "13", name = "Uplay"),
+            sampleStore(id = "25", name = "Epic Games Store"),
+            sampleStore(id = "1", name = "Steam"),
+            sampleStore(id = "11", name = "Humble Store"),
+        )
+
+        val sorted = StoreDisplayOrder.sort(stores)
+
+        assertEquals(listOf("1", "25", "11", "13", "7", "31"), sorted.map { it.id })
+    }
+
+    @Test
     fun todaysSpecialDeals_distinctByInternalName_keepsFirstDealOnly() {
         val deals = listOf(
             sampleDeal(internalName = "SAMEGAME", savingsPercentage = 60.0, dealId = "deal-1"),
@@ -93,6 +128,20 @@ class SharedLogicCommonTest {
         assertEquals(2, filtered.size)
         assertEquals("deal-1", filtered[0].id)
         assertEquals("deal-3", filtered[1].id)
+    }
+
+    private fun sampleStore(
+        id: String,
+        name: String,
+    ): Store {
+        return Store(
+            id = id,
+            name = name,
+            isActive = true,
+            bannerUrl = "",
+            logoUrl = "",
+            iconUrl = "",
+        )
     }
 
     private fun sampleDeal(

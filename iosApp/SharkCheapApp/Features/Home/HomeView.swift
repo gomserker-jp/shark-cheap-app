@@ -9,7 +9,9 @@ import ComposableArchitecture
 import SwiftUI
 
 struct HomeView: View {
-    @Bindable var store: StoreOf<HomeFeature>
+    private static let maxStoreDealsDisplayCount = 8
+
+    let store: StoreOf<HomeFeature>
 
     var body: some View {
         NavigationStack {
@@ -45,7 +47,7 @@ struct HomeView: View {
     }
 
     private var scrollContent: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 16) {
                 if let loadError = store.loadError {
                     Text(loadError)
@@ -54,6 +56,8 @@ struct HomeView: View {
                 }
 
                 todaysDealsSection
+                storeDealsSection
+                    .padding(.top, 8)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -82,6 +86,58 @@ struct HomeView: View {
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.viewAligned)
+        }
+    }
+
+    private var storeDealsSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            LargeSectionTitleLabel(text: L10n.StoreDeal.title)
+
+            if let storeDealsLoadError = store.storeDealsLoadError {
+                Text(storeDealsLoadError)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .padding(.top, 8)
+            }
+
+            VStack(alignment: .leading, spacing: 24) {
+                ForEach(store.storeDealSections) { section in
+                    VStack(alignment: .leading, spacing: 12) {
+                        MiddleSectionTitleLabel(
+                            title: section.storeName,
+                            storeId: section.id,
+                            logoURL: URL(string: section.logoUrl)
+                        )
+                        storeDealHorizontalList(deals: section.deals, storeId: section.id)
+                    }
+                }
+            }
+            .padding(.top, 8)
+        }
+    }
+
+    private func storeDealHorizontalList(deals: [DealItem], storeId: String) -> some View {
+        let displayedDeals = Array(deals.prefix(Self.maxStoreDealsDisplayCount))
+        let showsSeeMore = deals.count > Self.maxStoreDealsDisplayCount
+
+        return ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 12) {
+                ForEach(displayedDeals) { deal in
+                    if let destination = deal.safariDestination {
+                        NavigationLink(value: destination) {
+                            StoreDealThumbView(
+                                imageURL: URL(string: deal.thumbnailUrl),
+                                discountRate: deal.discountRate
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+
+                if showsSeeMore {
+                    StoreDealSeeMoreCell(storeId: storeId)
+                }
+            }
         }
     }
 }

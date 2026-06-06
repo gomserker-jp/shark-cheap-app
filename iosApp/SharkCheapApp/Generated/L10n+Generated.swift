@@ -10,6 +10,12 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum StoreDeal {
+    /// See More
+    internal static let seeMore = L10n.tr("Localizable", "storeDeal.seeMore", fallback: "See More")
+    /// Deal's On Store
+    internal static let title = L10n.tr("Localizable", "storeDeal.title", fallback: "Deal's On Store")
+  }
   internal enum TodaysDeal {
     /// Today's Deal
     internal static let title = L10n.tr("Localizable", "todaysDeal.title", fallback: "Today's Deal")
