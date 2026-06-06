@@ -33,6 +33,11 @@ struct DealItem: Equatable, Identifiable, Sendable {
     Int(savingsPercentage.rounded())
   }
 
+  var safariDestination: SafariDestination? {
+    guard let url = CheapSharkRedirectURL.deal(id: id) else { return nil }
+    return SafariDestination(url: url)
+  }
+
   init(deal: SharedLogic.Deal) {
     id = deal.id
     internalName = deal.internalName

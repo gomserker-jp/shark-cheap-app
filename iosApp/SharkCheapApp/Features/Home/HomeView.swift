@@ -12,14 +12,20 @@ struct HomeView: View {
   @Bindable var store: StoreOf<HomeFeature>
 
   var body: some View {
-    VStack(spacing: 0) {
-      navigationBar
-      scrollContent
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Asset.contentBackground.swiftUIColor)
-    .onAppear {
-      store.send(.onAppear)
+    NavigationStack {
+      VStack(spacing: 12) {
+        navigationBar
+        scrollContent
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Asset.contentBackground.swiftUIColor)
+      .toolbar(.hidden, for: .navigationBar)
+      .navigationDestination(for: SafariDestination.self) { destination in
+        DealWebScreen(url: destination.url)
+      }
+      .onAppear {
+        store.send(.onAppear)
+      }
     }
   }
 
@@ -51,22 +57,31 @@ struct HomeView: View {
       }
       .frame(maxWidth: .infinity, alignment: .leading)
     }
+    .padding(.horizontal, 16)
   }
 
   private var todaysDealsSection: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      LargeSectionTitleLabel(text: "Today's Deals")
+    VStack(alignment: .leading, spacing: 16) {
+      LargeSectionTitleLabel(text: L10n.TodaysDeal.title)
 
       ScrollView(.horizontal, showsIndicators: false) {
         LazyHStack(spacing: 0) {
           ForEach(store.todaysDeals) { deal in
-            HomeTodaysDealThumbView(
-              imageURL: URL(string: deal.thumbnailUrl),
-              discountRate: deal.discountRate
-            )
+            if let destination = deal.safariDestination {
+              NavigationLink(value: destination) {
+                HomeTodaysDealThumbView(
+                  imageURL: URL(string: deal.thumbnailUrl),
+                  storeId: deal.storeId,
+                  discountRate: deal.discountRate
+                )
+              }
+              .buttonStyle(.plain)
+            }
           }
         }
+        .scrollTargetLayout()
       }
+      .scrollTargetBehavior(.viewAligned)
     }
   }
 }

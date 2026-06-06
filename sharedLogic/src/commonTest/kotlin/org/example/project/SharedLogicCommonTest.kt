@@ -80,10 +80,29 @@ class SharedLogicCommonTest {
         assertFalse(deal.savingsPercentage >= TodaysSpecialDealsCriteria.MIN_SAVINGS_PERCENT)
     }
 
-    private fun sampleDeal(savingsPercentage: Double): Deal {
+    @Test
+    fun todaysSpecialDeals_distinctByInternalName_keepsFirstDealOnly() {
+        val deals = listOf(
+            sampleDeal(internalName = "SAMEGAME", savingsPercentage = 60.0, dealId = "deal-1"),
+            sampleDeal(internalName = "SAMEGAME", savingsPercentage = 70.0, dealId = "deal-2"),
+            sampleDeal(internalName = "OTHERGAME", savingsPercentage = 55.0, dealId = "deal-3"),
+        )
+
+        val filtered = TodaysSpecialDealsCriteria.filterDeals(deals)
+
+        assertEquals(2, filtered.size)
+        assertEquals("deal-1", filtered[0].id)
+        assertEquals("deal-3", filtered[1].id)
+    }
+
+    private fun sampleDeal(
+        savingsPercentage: Double,
+        internalName: String = "SAMPLEGAME",
+        dealId: String = "deal-1",
+    ): Deal {
         return Deal(
-            id = "deal-1",
-            internalName = "SAMPLEGAME",
+            id = dealId,
+            internalName = internalName,
             gameId = "1",
             storeId = "1",
             title = "Sample Game",

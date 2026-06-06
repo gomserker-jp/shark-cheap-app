@@ -19,7 +19,7 @@ data class DealResponse(
     @SerialName("steamRatingText") val steamRatingText: String? = null,
     @SerialName("steamRatingPercent") val steamRatingPercent: String,
     @SerialName("steamRatingCount") val steamRatingCount: String,
-    @SerialName("steamAppID") val steamAppId: String,
+    @SerialName("steamAppID") val steamAppId: String? = null,
     @SerialName("releaseDate") val releaseDate: Long,
     @SerialName("lastChange") val lastChange: Long,
     @SerialName("dealRating") val dealRating: String,

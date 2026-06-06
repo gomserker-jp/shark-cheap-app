@@ -12,7 +12,7 @@ struct LargeSectionTitleLabel: View {
 
   var body: some View {
     Text(text)
-      .font(.system(size: 16, weight: .bold))
+      .font(.system(size: 32, weight: .bold))
   }
 }
 

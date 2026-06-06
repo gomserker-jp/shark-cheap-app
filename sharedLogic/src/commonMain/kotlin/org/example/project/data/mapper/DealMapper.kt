@@ -20,7 +20,7 @@ fun DealResponse.toDomain(): Deal {
         steamRatingText = this.steamRatingText,
         steamRatingPercent = this.steamRatingPercent.toIntOrNull() ?: 0,
         steamRatingCount = this.steamRatingCount.toIntOrNull() ?: 0,
-        steamAppId = this.steamAppId.takeIf { it.isNotBlank() },
+        steamAppId = this.steamAppId?.takeIf { it.isNotBlank() },
         releaseDate = this.releaseDate,
         lastChange = this.lastChange,
         dealRating = this.dealRating.toDoubleOrNull() ?: 0.0,

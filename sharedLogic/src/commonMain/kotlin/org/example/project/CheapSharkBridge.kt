@@ -3,10 +3,10 @@ package org.example.project
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.bodyAsText
-import kotlinx.serialization.json.Json
 import org.example.project.data.mapper.toDomain
 import org.example.project.data.remote.CheapSharkApiConfig
 import org.example.project.data.remote.CheapSharkHttpClient
+import org.example.project.data.remote.CheapSharkJson
 import org.example.project.data.remote.model.response.DealResponse
 import org.example.project.data.remote.model.response.StoreResponse
 import org.example.project.domain.model.DealsPage
@@ -19,7 +19,7 @@ class CheapSharkBridge {
         val body = CheapSharkHttpClient.client
             .get("${CheapSharkApiConfig.BASE_URL}/stores")
             .bodyAsText()
-        return Json.decodeFromString<List<StoreResponse>>(body)
+        return CheapSharkJson.instance.decodeFromString<List<StoreResponse>>(body)
             .map { it.toDomain() }
             .filter { it.isActive }
     }
@@ -31,7 +31,7 @@ class CheapSharkBridge {
             }
         }
         val body = response.bodyAsText()
-        val deals = Json.decodeFromString<List<DealResponse>>(body)
+        val deals = CheapSharkJson.instance.decodeFromString<List<DealResponse>>(body)
             .map { it.toDomain() }
         val totalPageCount = response.headers["X-Total-Page-Count"]?.toIntOrNull()
         return DealsPage(deals = deals, totalPageCount = totalPageCount)
@@ -44,9 +44,7 @@ class CheapSharkBridge {
             )
         )
         return page.copy(
-            deals = page.deals.filter {
-                it.savingsPercentage >= TodaysSpecialDealsCriteria.MIN_SAVINGS_PERCENT
-            }
+            deals = TodaysSpecialDealsCriteria.filterDeals(page.deals)
         )
     }
 }
