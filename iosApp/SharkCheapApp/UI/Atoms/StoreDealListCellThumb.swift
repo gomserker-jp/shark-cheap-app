@@ -1,5 +1,5 @@
 //
-//  TodaysDealListCellThumb.swift
+//  StoreDealListCellThumb.swift
 //  SharkCheapApp
 //
 //  Created by Gomserker on 2026/06/06.
@@ -8,7 +8,7 @@
 import Kingfisher
 import SwiftUI
 
-struct TodaysDealListCellThumb: View {
+struct StoreDealListCellThumb: View {
     let imageURL: URL?
     let width: CGFloat
     let height: CGFloat
@@ -27,10 +27,10 @@ struct TodaysDealListCellThumb: View {
 }
 
 #Preview {
-    TodaysDealListCellThumb(
+    StoreDealListCellThumb(
         imageURL: URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/capsule_231x87.jpg"),
-        width: 343,
-        height: 257
+        width: 200,
+        height: 125
     )
     .padding()
 }
