@@ -15,6 +15,13 @@ data class DealResponse(
     @SerialName("normalPrice") val normalPrice: String,
     @SerialName("isOnSale") val isOnSale: String,
     @SerialName("savings") val savings: String,
+    @SerialName("metacriticScore") val metacriticScore: String,
+    @SerialName("steamRatingText") val steamRatingText: String? = null,
+    @SerialName("steamRatingPercent") val steamRatingPercent: String,
+    @SerialName("steamRatingCount") val steamRatingCount: String,
+    @SerialName("steamAppID") val steamAppId: String,
+    @SerialName("releaseDate") val releaseDate: Long,
+    @SerialName("lastChange") val lastChange: Long,
     @SerialName("dealRating") val dealRating: String,
     @SerialName("thumb") val thumb: String
 )
