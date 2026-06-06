@@ -1,13 +1,23 @@
+//
+//  CheapSharkClient.swift
+//  SharkCheapApp
+//
+//  Created by Gomserker on 2026/06/01.
+//
+
 import ComposableArchitecture
 import Foundation
 
 struct CheapSharkClient: Sendable {
   var fetchStores: @Sendable () async throws -> [StoreItem]
+  var saveStores: @Sendable ([StoreItem]) async throws -> Void
 
   init(
-    fetchStores: @escaping @Sendable () async throws -> [StoreItem] = { [] }
+    fetchStores: @escaping @Sendable () async throws -> [StoreItem] = { [] },
+    saveStores: @escaping @Sendable ([StoreItem]) async throws -> Void = { _ in }
   ) {
     self.fetchStores = fetchStores
+    self.saveStores = saveStores
   }
 }
 
@@ -19,7 +29,10 @@ extension CheapSharkClient: DependencyKey {
         StoreItem(
           id: "1",
           name: "Steam",
-          logoUrl: "https://www.cheapshark.com/images/stores/logos/0.png"
+          isActive: true,
+          bannerUrl: "https://www.cheapshark.com/images/stores/banners/0.png",
+          logoUrl: "https://www.cheapshark.com/images/stores/logos/0.png",
+          iconUrl: "https://www.cheapshark.com/images/stores/icons/0.png"
         ),
       ]
     }

@@ -1,5 +1,5 @@
 //
-//  StoreNameLabel.swift
+//  LargeSectionTitleLabel.swift
 //  SharkCheapApp
 //
 //  Created by Gomserker on 2026/06/01.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct StoreNameLabel: View {
+struct LargeSectionTitleLabel: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    StoreNameLabel()
+    LargeSectionTitleLabel()
 }

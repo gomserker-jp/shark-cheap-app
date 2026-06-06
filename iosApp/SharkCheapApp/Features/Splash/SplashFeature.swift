@@ -4,11 +4,13 @@
 //
 //  Created by Gomserker on 2026/06/01.
 //
+
 import ComposableArchitecture
 import Foundation
 
 enum SplashDisplayState: Equatable {
   case loading
+  case splashAnimation
   case loadingCompleted
 }
 
@@ -23,15 +25,14 @@ struct SplashFeature {
 
   enum Action: Equatable {
     case onAppear
-    case storesResponse(StoresRequestResult)
-
-    enum StoresRequestResult: Equatable {
-      case success([StoreItem])
-      case failure(String)
-    }
+    case persistenceCompleted([StoreItem])
+    case splashAnimationEnded
+    case splashDelayFinished
+    case loadFailed(String)
   }
 
   @Dependency(\.cheapSharkClient) var cheapSharkClient
+  @Dependency(\.continuousClock) var clock
 
   var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -42,21 +43,32 @@ struct SplashFeature {
         return .run { send in
           do {
             let stores = try await cheapSharkClient.fetchStores()
-            await send(.storesResponse(.success(stores)))
+            try await cheapSharkClient.saveStores(stores)
+            await send(.persistenceCompleted(stores))
           } catch {
-            await send(.storesResponse(.failure(error.localizedDescription)))
+            await send(.loadFailed(error.localizedDescription))
           }
         }
 
-      case let .storesResponse(.success(stores)):
+      case let .persistenceCompleted(stores):
         state.stores = stores
         state.loadError = nil
+        state.displayState = .splashAnimation
+        return .none
+
+      case .splashAnimationEnded:
+        return .run { send in
+          try await clock.sleep(for: .seconds(1.5))
+          await send(.splashDelayFinished)
+        }
+
+      case .splashDelayFinished:
         state.displayState = .loadingCompleted
         return .none
 
-      case let .storesResponse(.failure(message)):
+      case let .loadFailed(message):
         state.loadError = message
-        state.displayState = .loadingCompleted
+        state.displayState = .loading
         return .none
       }
     }
