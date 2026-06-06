@@ -8,5 +8,5 @@
 import Foundation
 
 struct SafariDestination: Equatable, Hashable {
-  let url: URL
+    let url: URL
 }

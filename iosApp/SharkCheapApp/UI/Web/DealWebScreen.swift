@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct DealWebScreen: View {
-  let url: URL
+    let url: URL
 
-  var body: some View {
-    ZStack(alignment: .bottomLeading) {
-      WebView(url: url)
-        .ignoresSafeArea()
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            WebView(url: url)
+                .ignoresSafeArea()
 
-      BackwardButton()
-        .padding(.leading, 24)
-        .padding(.bottom, 24)
+            BackwardButton()
+                .padding(.leading, 24)
+                .padding(.bottom, 24)
+        }
+        .toolbar(.hidden, for: .navigationBar)
     }
-    .toolbar(.hidden, for: .navigationBar)
-  }
 }
 
 #Preview {
-  DealWebScreen(url: URL(string: "https://www.cheapshark.com")!)
+    DealWebScreen(url: URL(string: "https://www.cheapshark.com")!)
 }

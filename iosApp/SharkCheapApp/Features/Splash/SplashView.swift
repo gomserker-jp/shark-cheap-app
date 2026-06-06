@@ -9,34 +9,34 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SplashView: View {
-  let store: StoreOf<SplashFeature>
+    let store: StoreOf<SplashFeature>
 
-  var body: some View {
-    ZStack {
-      SplashAnimationView(store: store)
+    var body: some View {
+        ZStack {
+            SplashAnimationView(store: store)
 
-      if let loadError = store.loadError {
-        VStack {
-          Spacer()
-          Text(loadError)
-            .font(.footnote)
-            .foregroundStyle(.red)
-            .padding()
+            if let loadError = store.loadError {
+                VStack {
+                    Spacer()
+                    Text(loadError)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                        .padding()
+                }
+            }
         }
-      }
+        .onAppear {
+            store.send(.onAppear)
+        }
     }
-    .onAppear {
-      store.send(.onAppear)
-    }
-  }
 }
 
 #Preview {
-  SplashView(
-    store: Store(initialState: SplashFeature.State()) {
-      SplashFeature()
-    } withDependencies: {
-      $0.cheapSharkClient = .previewValue
-    }
-  )
+    SplashView(
+        store: Store(initialState: SplashFeature.State()) {
+            SplashFeature()
+        } withDependencies: {
+            $0.cheapSharkClient = .previewValue
+        }
+    )
 }

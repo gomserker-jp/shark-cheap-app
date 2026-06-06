@@ -9,50 +9,50 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SplashAnimationView: View {
-  let store: StoreOf<SplashFeature>
+    let store: StoreOf<SplashFeature>
 
-  @State private var logoOffsetY: CGFloat = 0
+    @State private var logoOffsetY: CGFloat = 0
 
-  private let logoWidth: CGFloat = 400
-  private let logoHeight: CGFloat = 250
-  private let springResponse: TimeInterval = 0.5
+    private let logoWidth: CGFloat = 400
+    private let logoHeight: CGFloat = 250
+    private let springResponse: TimeInterval = 0.5
 
-  var body: some View {
-    GeometryReader { geometry in
-      let startOffsetY = geometry.size.height / 2 + logoHeight / 2
+    var body: some View {
+        GeometryReader { geometry in
+            let startOffsetY = geometry.size.height / 2 + logoHeight / 2
 
-      Image(asset: Asset.appLogo)
-        .resizable()
-        .scaledToFit()
-        .frame(width: logoWidth, height: logoHeight)
-        .offset(y: logoOffsetY)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear {
-          logoOffsetY = startOffsetY
+            Image(asset: Asset.appLogo)
+                .resizable()
+                .scaledToFit()
+                .frame(width: logoWidth, height: logoHeight)
+                .offset(y: logoOffsetY)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .onAppear {
+                    logoOffsetY = startOffsetY
+                }
+                .onChange(of: store.displayState) { _, newValue in
+                    switch newValue {
+                    case .loading:
+                        logoOffsetY = startOffsetY
+
+                    case .splashAnimation:
+                        playSlideUpAnimation()
+
+                    case .loadingCompleted:
+                        logoOffsetY = 0
+                    }
+                }
         }
-        .onChange(of: store.displayState) { _, newValue in
-          switch newValue {
-          case .loading:
-            logoOffsetY = startOffsetY
+    }
 
-          case .splashAnimation:
-            playSlideUpAnimation()
-
-          case .loadingCompleted:
+    private func playSlideUpAnimation() {
+        withAnimation(.spring(response: springResponse, dampingFraction: 0.75)) {
             logoOffsetY = 0
-          }
+        }
+
+        Task {
+            try? await Task.sleep(for: .seconds(springResponse))
+            store.send(.splashAnimationEnded)
         }
     }
-  }
-
-  private func playSlideUpAnimation() {
-    withAnimation(.spring(response: springResponse, dampingFraction: 0.75)) {
-      logoOffsetY = 0
-    }
-
-    Task {
-      try? await Task.sleep(for: .seconds(springResponse))
-      store.send(.splashAnimationEnded)
-    }
-  }
 }
