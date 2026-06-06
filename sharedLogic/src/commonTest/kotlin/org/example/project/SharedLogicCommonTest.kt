@@ -4,10 +4,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import org.example.project.domain.model.Deal
 import org.example.project.domain.model.DealsQuery
 import org.example.project.domain.model.TodaysSpecialDealsCriteria
+import kotlin.test.assertTrue
 
 class SharedLogicCommonTest {
 
@@ -59,14 +59,13 @@ class SharedLogicCommonTest {
     }
 
     @Test
-    fun todaysSpecialDealsCriteria_queryIncludesOnSaleAndMetacritic() {
+    fun todaysSpecialDealsCriteria_queryIncludesMetacritic() {
         val params = DealsQuery(
-            onSale = true,
             metacritic = TodaysSpecialDealsCriteria.MIN_METACRITIC
         ).toQueryParameters()
 
-        assertEquals("1", params["onSale"])
         assertEquals("80", params["metacritic"])
+        assertFalse(params.containsKey("onSale"))
     }
 
     @Test
@@ -81,10 +80,29 @@ class SharedLogicCommonTest {
         assertFalse(deal.savingsPercentage >= TodaysSpecialDealsCriteria.MIN_SAVINGS_PERCENT)
     }
 
-    private fun sampleDeal(savingsPercentage: Double): Deal {
+    @Test
+    fun todaysSpecialDeals_distinctByInternalName_keepsFirstDealOnly() {
+        val deals = listOf(
+            sampleDeal(internalName = "SAMEGAME", savingsPercentage = 60.0, dealId = "deal-1"),
+            sampleDeal(internalName = "SAMEGAME", savingsPercentage = 70.0, dealId = "deal-2"),
+            sampleDeal(internalName = "OTHERGAME", savingsPercentage = 55.0, dealId = "deal-3"),
+        )
+
+        val filtered = TodaysSpecialDealsCriteria.filterDeals(deals)
+
+        assertEquals(2, filtered.size)
+        assertEquals("deal-1", filtered[0].id)
+        assertEquals("deal-3", filtered[1].id)
+    }
+
+    private fun sampleDeal(
+        savingsPercentage: Double,
+        internalName: String = "SAMPLEGAME",
+        dealId: String = "deal-1",
+    ): Deal {
         return Deal(
-            id = "deal-1",
-            internalName = "SAMPLEGAME",
+            id = dealId,
+            internalName = internalName,
             gameId = "1",
             storeId = "1",
             title = "Sample Game",

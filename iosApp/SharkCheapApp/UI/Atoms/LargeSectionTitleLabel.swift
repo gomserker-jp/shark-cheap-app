@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct LargeSectionTitleLabel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+  let text: String
+
+  var body: some View {
+    Text(text)
+      .font(.system(size: 32, weight: .bold))
+  }
 }
 
 #Preview {
-    LargeSectionTitleLabel()
+  LargeSectionTitleLabel(text: "Today's Deals")
 }

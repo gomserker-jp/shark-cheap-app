@@ -7,17 +7,28 @@
 
 import ComposableArchitecture
 import Foundation
+import SharedLogic
 
 struct CheapSharkClient: Sendable {
   var fetchStores: @Sendable () async throws -> [StoreItem]
   var saveStores: @Sendable ([StoreItem]) async throws -> Void
+  var fetchDeals: @Sendable (DealsQuery) async throws -> ([DealItem], totalPageCount: Int?)
+  var fetchTodaysSpecialDeals: @Sendable () async throws -> [DealItem]
 
   init(
     fetchStores: @escaping @Sendable () async throws -> [StoreItem] = { [] },
-    saveStores: @escaping @Sendable ([StoreItem]) async throws -> Void = { _ in }
+    saveStores: @escaping @Sendable ([StoreItem]) async throws -> Void = { _ in },
+    fetchDeals: @escaping @Sendable (DealsQuery) async throws -> ([DealItem], totalPageCount: Int?) = { _ in
+      ([], totalPageCount: nil)
+    },
+    fetchTodaysSpecialDeals: @escaping @Sendable () async throws -> [DealItem] = {
+      []
+    }
   ) {
     self.fetchStores = fetchStores
     self.saveStores = saveStores
+    self.fetchDeals = fetchDeals
+    self.fetchTodaysSpecialDeals = fetchTodaysSpecialDeals
   }
 }
 

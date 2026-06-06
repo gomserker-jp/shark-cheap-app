@@ -27,6 +27,7 @@ internal enum Asset: Sendable {
   internal static let accentColor = ColorAsset(name: "AccentColor")
   internal static let appLogo = ImageAsset(name: "AppLogo")
   internal static let contentBackground = ColorAsset(name: "ContentBackground")
+  internal static let discountRateBackground = ColorAsset(name: "DiscountRateBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

@@ -11,29 +11,40 @@ import SwiftUI
 struct HomeView: View {
   @Bindable var store: StoreOf<HomeFeature>
 
-  private let gridColumns = [
-    GridItem(.adaptive(minimum: 96), spacing: 16),
-  ]
-
   var body: some View {
-    ZStack {
-      switch store.displayState {
-      case .loading:
-        IndicatorView()
-
-      case .loadingCompleted, .tapped:
-        content
+    NavigationStack {
+      VStack(spacing: 12) {
+        navigationBar
+        scrollContent
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Asset.contentBackground.swiftUIColor)
+      .toolbar(.hidden, for: .navigationBar)
+      .navigationDestination(for: SafariDestination.self) { destination in
+        DealWebScreen(url: destination.url)
+      }
+      .onAppear {
+        store.send(.onAppear)
       }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .onAppear {
-      store.send(.onAppear)
-    }
-    .alert($store.scope(state: \.$alert, action: \.alert))
   }
 
-  @ViewBuilder
-  private var content: some View {
+  private var navigationBar: some View {
+    HStack {
+      Spacer()
+
+      Image(asset: Asset.appLogo)
+        .resizable()
+        .scaledToFit()
+        .frame(height: 32)
+
+      Spacer()
+    }
+    .padding(.horizontal, 16)
+    .frame(height: 44)
+  }
+
+  private var scrollContent: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 16) {
         if let loadError = store.loadError {
@@ -42,25 +53,42 @@ struct HomeView: View {
             .foregroundStyle(.red)
         }
 
-        LazyVGrid(columns: gridColumns, spacing: 16) {
-          ForEach(store.stores) { storeItem in
-            Button {
-              store.send(.storeIconTapped(storeItem))
-            } label: {
-              StoreLogoView(url: storeItem.logoUrl)
+        todaysDealsSection
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    .padding(.horizontal, 16)
+  }
+
+  private var todaysDealsSection: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      LargeSectionTitleLabel(text: L10n.TodaysDeal.title)
+
+      ScrollView(.horizontal, showsIndicators: false) {
+        LazyHStack(spacing: 0) {
+          ForEach(store.todaysDeals) { deal in
+            if let destination = deal.safariDestination {
+              NavigationLink(value: destination) {
+                HomeTodaysDealThumbView(
+                  imageURL: URL(string: deal.thumbnailUrl),
+                  storeId: deal.storeId,
+                  discountRate: deal.discountRate
+                )
+              }
+              .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
           }
         }
+        .scrollTargetLayout()
       }
-      .padding()
+      .scrollTargetBehavior(.viewAligned)
     }
   }
 }
 
 #Preview {
   HomeView(
-    store: Store(initialState: HomeFeature.State(displayState: .loadingCompleted)) {
+    store: Store(initialState: HomeFeature.State()) {
       HomeFeature()
     } withDependencies: {
       $0.cheapSharkClient = .previewValue

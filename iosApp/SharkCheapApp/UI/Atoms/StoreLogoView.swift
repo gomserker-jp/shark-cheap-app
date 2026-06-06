@@ -2,36 +2,36 @@
 //  StoreLogoView.swift
 //  SharkCheapApp
 //
-//  Created by Gomserker on 2026/06/01.
+//  Created by Gomserker on 2026/06/06.
 //
 
 import Kingfisher
 import SwiftUI
 
 struct StoreLogoView: View {
-  let url: String
+  let storeId: String
+  let size: CGFloat
+
+  @State private var logoURL: URL?
 
   var body: some View {
     Group {
-      if let imageURL = URL(string: url) {
-        KFImage(imageURL)
-          .placeholder {
-            ProgressView()
-          }
+      if let logoURL {
+        KFImage(logoURL)
+          .fade(duration: 0.2)
           .resizable()
           .scaledToFit()
-      } else {
-        Image(systemName: "photo")
-          .resizable()
-          .scaledToFit()
-          .foregroundStyle(.secondary)
+          .frame(width: size, height: size)
+          .padding(4)
+          .clipShape(RoundedRectangle(cornerRadius: 8))
       }
     }
-    .frame(width: 96, height: 48)
-    .clipShape(RoundedRectangle(cornerRadius: 8))
+    .onAppear {
+      logoURL = StoreMasterRepository.logoURL(for: storeId)
+    }
   }
 }
 
 #Preview {
-  StoreLogoView(url: "https://www.cheapshark.com/images/stores/logos/0.png")
+  StoreLogoView(storeId: "1", size: 40)
 }
