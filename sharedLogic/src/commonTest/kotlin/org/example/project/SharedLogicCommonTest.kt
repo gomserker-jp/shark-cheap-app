@@ -4,10 +4,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import org.example.project.domain.model.Deal
 import org.example.project.domain.model.DealsQuery
 import org.example.project.domain.model.TodaysSpecialDealsCriteria
+import kotlin.test.assertTrue
 
 class SharedLogicCommonTest {
 
@@ -59,14 +59,13 @@ class SharedLogicCommonTest {
     }
 
     @Test
-    fun todaysSpecialDealsCriteria_queryIncludesOnSaleAndMetacritic() {
+    fun todaysSpecialDealsCriteria_queryIncludesMetacritic() {
         val params = DealsQuery(
-            onSale = true,
             metacritic = TodaysSpecialDealsCriteria.MIN_METACRITIC
         ).toQueryParameters()
 
-        assertEquals("1", params["onSale"])
         assertEquals("80", params["metacritic"])
+        assertFalse(params.containsKey("onSale"))
     }
 
     @Test

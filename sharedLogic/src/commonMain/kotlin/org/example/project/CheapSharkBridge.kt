@@ -9,7 +9,6 @@ import org.example.project.data.remote.CheapSharkApiConfig
 import org.example.project.data.remote.CheapSharkHttpClient
 import org.example.project.data.remote.model.response.DealResponse
 import org.example.project.data.remote.model.response.StoreResponse
-import org.example.project.domain.model.DealSortBy
 import org.example.project.domain.model.DealsPage
 import org.example.project.domain.model.DealsQuery
 import org.example.project.domain.model.Store
@@ -38,17 +37,10 @@ class CheapSharkBridge {
         return DealsPage(deals = deals, totalPageCount = totalPageCount)
     }
 
-    suspend fun fetchTodaysSpecialDeals(
-        storeIds: List<String>? = null,
-        pageNumber: Int = 0
-    ): DealsPage {
+    suspend fun fetchTodaysSpecialDeals(): DealsPage {
         val page = fetchDeals(
             DealsQuery(
-                storeIds = storeIds,
-                onSale = true,
-                metacritic = TodaysSpecialDealsCriteria.MIN_METACRITIC,
-                sortBy = DealSortBy.DealRating,
-                pageNumber = pageNumber
+                metacritic = TodaysSpecialDealsCriteria.MIN_METACRITIC
             )
         )
         return page.copy(

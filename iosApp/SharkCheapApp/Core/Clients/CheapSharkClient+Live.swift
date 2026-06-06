@@ -23,6 +23,17 @@ extension CheapSharkClient {
           }
         }
       }
+    },
+    fetchDeals: { query in
+      let page = try await CheapSharkBridge().fetchDeals(query: query)
+      return (
+        page.deals.map(DealItem.init(deal:)),
+        totalPageCount: page.totalPageCount.map { Int(truncating: $0) }
+      )
+    },
+    fetchTodaysSpecialDeals: {
+      let page = try await CheapSharkBridge().fetchTodaysSpecialDeals()
+      return page.deals.map(DealItem.init(deal:))
     }
   )
 }

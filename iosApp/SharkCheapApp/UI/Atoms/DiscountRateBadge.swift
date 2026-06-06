@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct DiscountRateBadge: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+  let rate: Int
+  let fontSize: CGFloat
+
+  var body: some View {
+    Text("\(rate)%")
+      .font(.system(size: fontSize, weight: .bold))
+      .foregroundStyle(.white)
+      .padding(.vertical, 6)
+      .padding(.horizontal, 12)
+      .background {
+        RoundedRectangle(cornerRadius: 8)
+          .fill(Asset.discountRateBackground.swiftUIColor)
+      }
+  }
 }
 
 #Preview {
-    DiscountRateBadge()
+  DiscountRateBadge(rate: 75, fontSize: 32)
 }
