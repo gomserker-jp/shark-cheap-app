@@ -1,3 +1,9 @@
 "todaysDeal.title" = "Today's Deal";
 "storeDeal.title" = "ストアー別セール";
 "storeDeal.seeMore" = "もっと見る";
+"tab.home.title" = "ホーム";
+"tab.home.sficon" = "house";
+"tab.search.title" = "検索";
+"tab.search.sficon" = "magnifyingglass";
+"tab.favorites.title" = "お気に入り";
+"tab.favorites.sficon" = "star";
