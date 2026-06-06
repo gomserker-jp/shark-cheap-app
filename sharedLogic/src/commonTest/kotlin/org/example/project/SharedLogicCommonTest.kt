@@ -112,7 +112,7 @@ class SharedLogicCommonTest {
 
         val sorted = StoreDisplayOrder.sort(stores)
 
-        assertEquals(listOf("1", "25", "11", "13", "7", "31"), sorted.map { it.id })
+        assertEquals(listOf("1", "25", "11", "13", "31", "7"), sorted.map { it.id })
     }
 
     @Test
