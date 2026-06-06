@@ -20,6 +20,7 @@ struct DealWebScreen: View {
                 .padding(.bottom, 24)
         }
         .toolbar(.hidden, for: .navigationBar)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

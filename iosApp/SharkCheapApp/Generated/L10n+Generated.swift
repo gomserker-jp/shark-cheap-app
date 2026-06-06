@@ -16,6 +16,26 @@ internal enum L10n {
     /// Deal's On Store
     internal static let title = L10n.tr("Localizable", "storeDeal.title", fallback: "Deal's On Store")
   }
+  internal enum Tab {
+    internal enum Favorites {
+      /// star
+      internal static let sficon = L10n.tr("Localizable", "tab.favorites.sficon", fallback: "star")
+      /// Favorites
+      internal static let title = L10n.tr("Localizable", "tab.favorites.title", fallback: "Favorites")
+    }
+    internal enum Home {
+      /// house
+      internal static let sficon = L10n.tr("Localizable", "tab.home.sficon", fallback: "house")
+      /// Home
+      internal static let title = L10n.tr("Localizable", "tab.home.title", fallback: "Home")
+    }
+    internal enum Search {
+      /// magnifyingglass
+      internal static let sficon = L10n.tr("Localizable", "tab.search.sficon", fallback: "magnifyingglass")
+      /// Search
+      internal static let title = L10n.tr("Localizable", "tab.search.title", fallback: "Search")
+    }
+  }
   internal enum TodaysDeal {
     /// Today's Deal
     internal static let title = L10n.tr("Localizable", "todaysDeal.title", fallback: "Today's Deal")

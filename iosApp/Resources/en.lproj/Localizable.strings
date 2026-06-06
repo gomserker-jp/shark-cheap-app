@@ -1,3 +1,9 @@
 "todaysDeal.title" = "Today's Deal";
 "storeDeal.title" = "Deal's On Store";
 "storeDeal.seeMore" = "See More";
+"tab.home.title" = "Home";
+"tab.home.sficon" = "house";
+"tab.search.title" = "Search";
+"tab.search.sficon" = "magnifyingglass";
+"tab.favorites.title" = "Favorites";
+"tab.favorites.sficon" = "star";

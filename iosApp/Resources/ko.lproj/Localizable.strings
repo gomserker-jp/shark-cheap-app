@@ -1,3 +1,9 @@
 "todaysDeal.title" = "오늘의 특가";
 "storeDeal.title" = "스토어별 특가";
 "storeDeal.seeMore" = "더보기";
+"tab.home.title" = "홈";
+"tab.home.sficon" = "house";
+"tab.search.title" = "검색";
+"tab.search.sficon" = "magnifyingglass";
+"tab.favorites.title" = "즐겨찾기";
+"tab.favorites.sficon" = "star";

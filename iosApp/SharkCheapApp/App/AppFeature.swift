@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 enum AppPhase: Equatable {
     case splash
-    case home
+    case main
 }
 
 @Reducer
@@ -18,28 +18,28 @@ struct AppFeature {
     struct State: Equatable {
         var phase: AppPhase = .splash
         var splash = SplashFeature.State()
-        var home = HomeFeature.State()
+        var tab = TabFeature.State()
     }
 
     enum Action: Equatable {
         case splash(SplashFeature.Action)
-        case home(HomeFeature.Action)
+        case tab(TabFeature.Action)
     }
 
     var body: some ReducerOf<Self> {
         Scope(state: \.splash, action: \.splash) {
             SplashFeature()
         }
-        Scope(state: \.home, action: \.home) {
-            HomeFeature()
+        Scope(state: \.tab, action: \.tab) {
+            TabFeature()
         }
         Reduce { state, action in
             switch action {
             case .splash(.splashDelayFinished):
-                state.phase = .home
+                state.phase = .main
                 return .none
 
-            case .splash, .home:
+            case .splash, .tab:
                 return .none
             }
         }

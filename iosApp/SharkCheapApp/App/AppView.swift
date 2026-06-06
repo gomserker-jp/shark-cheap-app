@@ -18,9 +18,9 @@ struct AppView: View {
                 store: store.scope(state: \.splash, action: \.splash)
             )
 
-        case .home:
-            HomeView(
-                store: store.scope(state: \.home, action: \.home)
+        case .main:
+            AppTabView(
+                store: store.scope(state: \.tab, action: \.tab)
             )
         }
     }
