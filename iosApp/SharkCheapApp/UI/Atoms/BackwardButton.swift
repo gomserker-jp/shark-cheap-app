@@ -16,8 +16,8 @@ struct BackwardButton: View {
         } label: {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 22, weight: .semibold))
-                .foregroundStyle(.primary)
-                .frame(width: 48, height: 48)
+                .foregroundStyle(.black)
+                .frame(width: 60, height: 60)
                 .background(.ultraThinMaterial, in: Circle())
         }
         .accessibilityLabel("Back")

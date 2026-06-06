@@ -76,7 +76,9 @@ struct HomeView: View {
                                 HomeTodaysDealThumbView(
                                     imageURL: URL(string: deal.thumbnailUrl),
                                     storeId: deal.storeId,
-                                    discountRate: deal.discountRate
+                                    discountRate: deal.discountRate,
+                                    salePrice: deal.salePrice,
+                                    normalPrice: deal.normalPrice
                                 )
                             }
                             .buttonStyle(.plain)
@@ -127,7 +129,9 @@ struct HomeView: View {
                         NavigationLink(value: destination) {
                             StoreDealThumbView(
                                 imageURL: URL(string: deal.thumbnailUrl),
-                                discountRate: deal.discountRate
+                                discountRate: deal.discountRate,
+                                salePrice: deal.salePrice,
+                                normalPrice: deal.normalPrice
                             )
                         }
                         .buttonStyle(.plain)
