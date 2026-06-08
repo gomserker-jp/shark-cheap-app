@@ -67,7 +67,10 @@ struct HomeView: View {
 
     private var todaysDealsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            LargeSectionTitleLabel(text: L10n.TodaysDeal.title)
+            LargeSectionTitleLabel(
+                text: L10n.TodaysDeal.title,
+                infoMessage: L10n.TodaysDeal.description
+            )
 
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
@@ -94,7 +97,10 @@ struct HomeView: View {
 
     private var storeDealsSection: some View {
         VStack(alignment: .leading, spacing: 0) {
-            LargeSectionTitleLabel(text: L10n.StoreDeal.title)
+            LargeSectionTitleLabel(
+                text: L10n.StoreDeal.title,
+                infoMessage: L10n.StoreDeal.description
+            )
 
             if let storeDealsLoadError = store.storeDealsLoadError {
                 Text(storeDealsLoadError)

@@ -11,6 +11,10 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
   internal enum StoreDeal {
+    /// Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.
+    /// 
+    /// For other deals, please search by game title on the Search screen.
+    internal static let description = L10n.tr("Localizable", "storeDeal.description", fallback: "Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.\n\nFor other deals, please search by game title on the Search screen.")
     /// See More
     internal static let seeMore = L10n.tr("Localizable", "storeDeal.seeMore", fallback: "See More")
     /// Deal's On Store
@@ -37,6 +41,10 @@ internal enum L10n {
     }
   }
   internal enum TodaysDeal {
+    /// Today's Deal highlights deals with a Metacritic score of 80 or higher and a discount of 50%% or more from all available deals.
+    /// 
+    /// For other deals, please search by game title on the Search screen.
+    internal static let description = L10n.tr("Localizable", "todaysDeal.description", fallback: "Today's Deal highlights deals with a Metacritic score of 80 or higher and a discount of 50%% or more from all available deals.\n\nFor other deals, please search by game title on the Search screen.")
     /// Today's Deal
     internal static let title = L10n.tr("Localizable", "todaysDeal.title", fallback: "Today's Deal")
   }

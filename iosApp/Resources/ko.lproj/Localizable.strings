@@ -1,5 +1,7 @@
 "todaysDeal.title" = "오늘의 특가";
+"todaysDeal.description" = "오늘의 특가는 전체 특가 중 메타크리틱 80점 이상, 할인율 50%% 이상인 특가를 소개하고 있습니다\n\n기타 특가 정보는 검색 화면에서 게임 타이틀로 검색해주세요.";
 "storeDeal.title" = "스토어별 특가";
+"storeDeal.description" = "스토어별 특가는 각 스토어의 특가 중 메타크리틱 80점 이상, 할인율 30%% 이상인 특가를 소개하고 있습니다\n\n기타 특가 정보는 검색 화면에서 게임 타이틀로 검색해주세요.";
 "storeDeal.seeMore" = "더보기";
 "tab.home.title" = "홈";
 "tab.home.sficon" = "house";

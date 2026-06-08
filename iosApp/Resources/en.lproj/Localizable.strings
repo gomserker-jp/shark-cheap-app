@@ -1,5 +1,7 @@
 "todaysDeal.title" = "Today's Deal";
+"todaysDeal.description" = "Today's Deal highlights deals with a Metacritic score of 80 or higher and a discount of 50%% or more from all available deals.\n\nFor other deals, please search by game title on the Search screen.";
 "storeDeal.title" = "Deal's On Store";
+"storeDeal.description" = "Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.\n\nFor other deals, please search by game title on the Search screen.";
 "storeDeal.seeMore" = "See More";
 "tab.home.title" = "Home";
 "tab.home.sficon" = "house";
