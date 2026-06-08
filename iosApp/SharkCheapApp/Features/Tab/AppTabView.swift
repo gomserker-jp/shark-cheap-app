@@ -22,7 +22,7 @@ struct AppTabView: View {
                 }
                 .tag(MainTab.home)
 
-            tabPlaceholder
+            SearchView(store: store.scope(state: \.search, action: \.search))
                 .tabItem {
                     Label(L10n.Tab.Search.title, systemImage: L10n.Tab.Search.sficon)
                 }

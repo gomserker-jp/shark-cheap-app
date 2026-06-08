@@ -3,6 +3,8 @@
 "storeDeal.title" = "Deal's On Store";
 "storeDeal.description" = "Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.\n\nFor other deals, please search by game title on the Search screen.";
 "storeDeal.seeMore" = "See More";
+"search.placeholder"="Search by game title";
+"search.description"="Due to API specifications, search is only available using English titles. Thank you for your understanding.";
 "tab.home.title" = "Home";
 "tab.home.sficon" = "house";
 "tab.search.title" = "Search";
