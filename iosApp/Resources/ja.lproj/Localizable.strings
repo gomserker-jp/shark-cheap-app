@@ -1,5 +1,7 @@
 "todaysDeal.title" = "Today's Deal";
+"todaysDeal.description" = "「Today's Deal」では、全てのセールの中でメタクリティック80点以上、割引率50%%以上のセールを紹介しています。\n\n他のセール情報は、検索画面でゲームタイトルを検索してください。";
 "storeDeal.title" = "ストアー別セール";
+"storeDeal.description" = "「ストアー別セール」では、各ストアーのセールの中でメタクリティック80点以上、割引率30%%以上のセールを紹介しています。\n\n他のセール情報は、検索画面でゲームタイトルを検索してください。";
 "storeDeal.seeMore" = "もっと見る";
 "tab.home.title" = "ホーム";
 "tab.home.sficon" = "house";
