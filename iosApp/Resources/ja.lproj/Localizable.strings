@@ -3,6 +3,8 @@
 "storeDeal.title" = "ストアー別セール";
 "storeDeal.description" = "「ストアー別セール」では、各ストアーのセールの中でメタクリティック80点以上、割引率30%%以上のセールを紹介しています。\n\n他のセール情報は、検索画面でゲームタイトルを検索してください。";
 "storeDeal.seeMore" = "もっと見る";
+"search.placeholder"="ゲームタイトルを入力してください";
+"search.description"="使用APIの仕様により、検索は英語タイトルのみご利用いただけます。ご理解のほどよろしくお願いいたします。";
 "tab.home.title" = "ホーム";
 "tab.home.sficon" = "house";
 "tab.search.title" = "検索";

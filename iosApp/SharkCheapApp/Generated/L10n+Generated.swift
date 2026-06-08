@@ -10,6 +10,12 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum Search {
+    /// Due to API specifications, search is only available using English titles. Thank you for your understanding.
+    internal static let description = L10n.tr("Localizable", "search.description", fallback: "Due to API specifications, search is only available using English titles. Thank you for your understanding.")
+    /// Search by game title
+    internal static let placeholder = L10n.tr("Localizable", "search.placeholder", fallback: "Search by game title")
+  }
   internal enum StoreDeal {
     /// Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.
     /// 

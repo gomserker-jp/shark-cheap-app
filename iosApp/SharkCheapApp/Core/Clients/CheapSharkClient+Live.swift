@@ -38,6 +38,10 @@ extension CheapSharkClient {
         fetchStoreDealsSections: {
             let sections = try await CheapSharkBridge().fetchStoreDealsSections()
             return sections.map(StoreDealsSectionItem.init(section:))
+        },
+        searchGames: { title in
+            let results = try await CheapSharkBridge().fetchGames(title: title)
+            return results.map(GameSearchResultItem.init(result:))
         }
     )
 }

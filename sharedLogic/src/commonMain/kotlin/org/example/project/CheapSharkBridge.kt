@@ -8,12 +8,15 @@ import org.example.project.data.remote.CheapSharkApiConfig
 import org.example.project.data.remote.CheapSharkHttpClient
 import org.example.project.data.remote.CheapSharkJson
 import org.example.project.data.remote.model.response.DealResponse
+import org.example.project.data.remote.model.response.GameSearchResponse
 import org.example.project.data.remote.model.response.StoreResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.example.project.domain.model.DealsPage
 import org.example.project.domain.model.DealsQuery
+import org.example.project.domain.model.GameSearchQuery
+import org.example.project.domain.model.GameSearchResult
 import org.example.project.domain.model.Store
 import org.example.project.domain.model.StoreDealsCriteria
 import org.example.project.domain.model.StoreDealsSection
@@ -42,6 +45,19 @@ class CheapSharkBridge {
         val totalPageCount = response.headers["X-Total-Page-Count"]?.toIntOrNull()
         return DealsPage(deals = deals, totalPageCount = totalPageCount)
     }
+
+    suspend fun fetchGames(query: GameSearchQuery): List<GameSearchResult> {
+        val body = CheapSharkHttpClient.client.get("${CheapSharkApiConfig.BASE_URL}/games") {
+            query.toQueryParameters().forEach { (key, value) ->
+                parameter(key, value)
+            }
+        }.bodyAsText()
+        return CheapSharkJson.instance.decodeFromString<List<GameSearchResponse>>(body)
+            .map { it.toDomain() }
+    }
+
+    suspend fun fetchGames(title: String): List<GameSearchResult> =
+        fetchGames(GameSearchQuery(title = title))
 
     suspend fun fetchTodaysSpecialDeals(): DealsPage {
         val page = fetchDeals(

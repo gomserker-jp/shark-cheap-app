@@ -15,4 +15,11 @@ data class GameSearchQuery(
             "limit error"
         }
     }
+
+    fun toQueryParameters(): Map<String, String> = buildMap {
+        title?.takeIf { it.isNotBlank() }?.let { put("title", it) }
+        steamAppId?.let { put("steamAppID", it.toString()) }
+        if (limit != 60) put("limit", limit.toString())
+        if (exact) put("exact", "1")
+    }
 }

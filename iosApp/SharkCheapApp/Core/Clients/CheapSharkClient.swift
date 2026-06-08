@@ -15,6 +15,7 @@ struct CheapSharkClient: Sendable {
     var fetchDeals: @Sendable (DealsQuery) async throws -> ([DealItem], totalPageCount: Int?)
     var fetchTodaysSpecialDeals: @Sendable () async throws -> [DealItem]
     var fetchStoreDealsSections: @Sendable () async throws -> [StoreDealsSectionItem]
+    var searchGames: @Sendable (String) async throws -> [GameSearchResultItem]
 
     init(
         fetchStores: @escaping @Sendable () async throws -> [StoreItem] = { [] },
@@ -27,6 +28,9 @@ struct CheapSharkClient: Sendable {
         },
         fetchStoreDealsSections: @escaping @Sendable () async throws -> [StoreDealsSectionItem] = {
             []
+        },
+        searchGames: @escaping @Sendable (String) async throws -> [GameSearchResultItem] = { _ in
+            []
         }
     ) {
         self.fetchStores = fetchStores
@@ -34,6 +38,7 @@ struct CheapSharkClient: Sendable {
         self.fetchDeals = fetchDeals
         self.fetchTodaysSpecialDeals = fetchTodaysSpecialDeals
         self.fetchStoreDealsSections = fetchStoreDealsSections
+        self.searchGames = searchGames
     }
 }
 
@@ -83,6 +88,32 @@ extension CheapSharkClient: DependencyKey {
                             )
                         ),
                     ]
+                ),
+            ]
+        },
+        searchGames: { _ in
+            [
+                GameSearchResultItem(
+                    result: SharedLogic.GameSearchResult(
+                        id: "612",
+                        title: "LEGO Batman",
+                        cheapestPrice: 4.23,
+                        cheapestDealId: "preview-deal-1",
+                        steamAppId: "21000",
+                        thumbnailUrl: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/capsule_231x87.jpg",
+                        internalName: "LEGOBATMAN"
+                    )
+                ),
+                GameSearchResultItem(
+                    result: SharedLogic.GameSearchResult(
+                        id: "136655",
+                        title: "Counter-Strike 2",
+                        cheapestPrice: 0,
+                        cheapestDealId: "preview-deal-2",
+                        steamAppId: "730",
+                        thumbnailUrl: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/capsule_231x87.jpg",
+                        internalName: "CSGO"
+                    )
                 ),
             ]
         }
