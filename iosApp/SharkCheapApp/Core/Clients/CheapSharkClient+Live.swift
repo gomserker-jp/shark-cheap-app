@@ -42,6 +42,10 @@ extension CheapSharkClient {
         searchGames: { title in
             let results = try await CheapSharkBridge().fetchGames(title: title)
             return results.map(GameSearchResultItem.init(result:))
+        },
+        fetchGameDetail: { gameId in
+            let detail = try await CheapSharkBridge().fetchGameDetail(gameId: gameId)
+            return GameDetailItem(detail: detail)
         }
     )
 }
