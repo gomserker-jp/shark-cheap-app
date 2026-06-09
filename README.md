@@ -1,3 +1,30 @@
+# SharkCheap App
+## 概要
+[CheapShark public API](https://apidocs.cheapshark.com/)を使ったゲームのESDプラットフォーム別値段追跡アプリケーション
+
+## 主要機能
+- セール全とやESDプラットフォーム別目玉セール情報確認
+- ゲーム検索機能
+- 3ヶ国語対応（日・韓・英）
+- ゲーム別詳細セール情報確認機能（開発中）
+- お気に入り機能（開発中）
+
+## 開発環境
+| 項目 | 技術スペック |
+| --- | --- |
+| 言語 | Swift 6.0 |
+| UI | SwiftUI |
+| 非同期処理 | Swift Concurrency |
+| アーキテクチャ | The Composable Architecture（TCA）with Atomic Design |
+| 共通ロジック | Kotlin Multiplatform Mobile（KMM） |
+| CI/CD | GitHub Actions + Fastlane |
+| DB | Realm |
+| AIツール | Cursor |
+| ライブラリ (KMP) | SKIE |
+| ライブラリ (iOS) | Kingfisher |
+
+---
+
 ### セットアップ（日本語）
 
 このプロジェクトをローカルで動かすための手順です。
