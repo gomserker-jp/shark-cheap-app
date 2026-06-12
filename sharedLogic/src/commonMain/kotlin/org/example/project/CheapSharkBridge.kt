@@ -8,6 +8,7 @@ import org.example.project.data.remote.CheapSharkApiConfig
 import org.example.project.data.remote.CheapSharkHttpClient
 import org.example.project.data.remote.CheapSharkJson
 import org.example.project.data.remote.model.response.DealResponse
+import org.example.project.data.remote.model.response.GameLookupResponse
 import org.example.project.data.remote.model.response.GameSearchResponse
 import org.example.project.data.remote.model.response.StoreResponse
 import kotlinx.coroutines.async
@@ -15,6 +16,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.example.project.domain.model.DealsPage
 import org.example.project.domain.model.DealsQuery
+import org.example.project.domain.model.GameDetail
 import org.example.project.domain.model.GameSearchQuery
 import org.example.project.domain.model.GameSearchResult
 import org.example.project.domain.model.Store
@@ -58,6 +60,16 @@ class CheapSharkBridge {
 
     suspend fun fetchGames(title: String): List<GameSearchResult> =
         fetchGames(GameSearchQuery(title = title))
+
+    suspend fun fetchGameDetail(gameId: String): GameDetail {
+        val body = CheapSharkHttpClient.client
+            .get("${CheapSharkApiConfig.BASE_URL}/games") {
+                parameter("id", gameId)
+            }
+            .bodyAsText()
+        return CheapSharkJson.instance.decodeFromString<GameLookupResponse>(body)
+            .toDomain()
+    }
 
     suspend fun fetchTodaysSpecialDeals(): DealsPage {
         val page = fetchDeals(

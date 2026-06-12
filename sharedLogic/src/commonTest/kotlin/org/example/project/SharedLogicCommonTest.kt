@@ -4,6 +4,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import org.example.project.data.mapper.toDomain
+import org.example.project.data.remote.CheapSharkJson
+import org.example.project.data.remote.model.response.GameLookupResponse
 import org.example.project.domain.model.Deal
 import org.example.project.domain.model.DealsQuery
 import org.example.project.domain.model.Store
@@ -113,6 +116,45 @@ class SharedLogicCommonTest {
         val sorted = StoreDisplayOrder.sort(stores)
 
         assertEquals(listOf("1", "25", "11", "13", "31", "7"), sorted.map { it.id })
+    }
+
+    @Test
+    fun gameLookupResponse_decodesAndMapsToDomain() {
+        val json = """
+            {
+              "info": {
+                "title": "LEGO Batman",
+                "steamAppID": "21000",
+                "thumb": "https://example.com/thumb.jpg"
+              },
+              "cheapestPriceEver": {
+                "price": "3.99",
+                "date": 1543028665
+              },
+              "deals": [
+                {
+                  "storeID": "23",
+                  "dealID": "deal-1",
+                  "price": "4.23",
+                  "retailPrice": "19.99",
+                  "savings": "78.839420"
+                }
+              ]
+            }
+        """.trimIndent()
+
+        val response = CheapSharkJson.instance.decodeFromString<GameLookupResponse>(json)
+        val detail = response.toDomain()
+
+        assertEquals("LEGO Batman", detail.title)
+        assertEquals("21000", detail.steamAppId)
+        assertEquals(3.99, detail.cheapestPriceEverPrice)
+        assertEquals(1_543_028_665L, detail.cheapestPriceEverDate)
+        assertEquals(1, detail.deals.size)
+        assertEquals("deal-1", detail.deals[0].dealId)
+        assertEquals("23", detail.deals[0].storeId)
+        assertEquals(4.23, detail.deals[0].price)
+        assertEquals(78.839420, detail.deals[0].savingsPercentage)
     }
 
     @Test

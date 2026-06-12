@@ -16,6 +16,7 @@ struct CheapSharkClient: Sendable {
     var fetchTodaysSpecialDeals: @Sendable () async throws -> [DealItem]
     var fetchStoreDealsSections: @Sendable () async throws -> [StoreDealsSectionItem]
     var searchGames: @Sendable (String) async throws -> [GameSearchResultItem]
+    var fetchGameDetail: @Sendable (String) async throws -> GameDetailItem
 
     init(
         fetchStores: @escaping @Sendable () async throws -> [StoreItem] = { [] },
@@ -31,6 +32,18 @@ struct CheapSharkClient: Sendable {
         },
         searchGames: @escaping @Sendable (String) async throws -> [GameSearchResultItem] = { _ in
             []
+        },
+        fetchGameDetail: @escaping @Sendable (String) async throws -> GameDetailItem = { _ in
+            GameDetailItem(
+                detail: SharedLogic.GameDetail(
+                    title: "",
+                    steamAppId: nil,
+                    thumbnailUrl: "",
+                    cheapestPriceEverPrice: 0,
+                    cheapestPriceEverDate: 0,
+                    deals: []
+                )
+            )
         }
     ) {
         self.fetchStores = fetchStores
@@ -39,6 +52,7 @@ struct CheapSharkClient: Sendable {
         self.fetchTodaysSpecialDeals = fetchTodaysSpecialDeals
         self.fetchStoreDealsSections = fetchStoreDealsSections
         self.searchGames = searchGames
+        self.fetchGameDetail = fetchGameDetail
     }
 }
 
@@ -116,6 +130,33 @@ extension CheapSharkClient: DependencyKey {
                     )
                 ),
             ]
+        },
+        fetchGameDetail: { _ in
+            GameDetailItem(
+                detail: SharedLogic.GameDetail(
+                    title: "LEGO Batman",
+                    steamAppId: "21000",
+                    thumbnailUrl: "https://cdn.cloudflare.steamstatic.com/steam/apps/21000/capsule_231x87.jpg",
+                    cheapestPriceEverPrice: 3.99,
+                    cheapestPriceEverDate: 1_543_028_665,
+                    deals: [
+                        SharedLogic.GameDetailDeal(
+                            dealId: "preview-deal-1",
+                            storeId: "23",
+                            price: 4.23,
+                            retailPrice: 19.99,
+                            savingsPercentage: 78.84
+                        ),
+                        SharedLogic.GameDetailDeal(
+                            dealId: "preview-deal-2",
+                            storeId: "21",
+                            price: 4.59,
+                            retailPrice: 19.99,
+                            savingsPercentage: 77.04
+                        ),
+                    ]
+                )
+            )
         }
     )
 }
