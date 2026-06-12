@@ -11,3 +11,5 @@
 "tab.search.sficon" = "magnifyingglass";
 "tab.favorites.title" = "즐겨찾기";
 "tab.favorites.sficon" = "star";
+"search_detail.favorite.title" = "즐겨찾기";
+"search_detail.favorite.already_did" = "등록됨";

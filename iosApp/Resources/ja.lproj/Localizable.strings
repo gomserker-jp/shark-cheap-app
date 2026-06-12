@@ -11,3 +11,5 @@
 "tab.search.sficon" = "magnifyingglass";
 "tab.favorites.title" = "お気に入り";
 "tab.favorites.sficon" = "star";
+"search_detail.favorite.title" = "お気に入り";
+"search_detail.favorite.already_did" = "登録済み";

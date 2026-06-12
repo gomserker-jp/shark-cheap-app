@@ -29,9 +29,12 @@ struct SearchDetailInfoView: View {
                         height: thumbHeight
                     )
 
-                    FavoriteButton()
+                    FavoriteLabelButton()
                 }
                 .frame(width: thumbWidth)
+                .alignmentGuide(.top) { dimensions in
+                    dimensions[VerticalAlignment.center]
+                }
 
                 VStack(alignment: .leading, spacing: 10) {
                     CommonTitleLabel(title: title)
@@ -47,7 +50,10 @@ struct SearchDetailInfoView: View {
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .layoutPriority(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .alignmentGuide(.top) { dimensions in
+                    dimensions[VerticalAlignment.center]
+                }
             }
             .padding(.leading, 12)
             .padding(.trailing, 12)
