@@ -29,6 +29,7 @@ internal enum Asset: Sendable {
   internal enum Colors {
     internal static let accentPressed = ColorAsset(name: "Colors/AccentPressed")
     internal static let accentSubtle = ColorAsset(name: "Colors/AccentSubtle")
+    internal static let textPrimary = ColorAsset(name: "Colors/TextPrimary")
   }
   internal static let contentBackground = ColorAsset(name: "ContentBackground")
   internal static let discountRateBackground = ColorAsset(name: "DiscountRateBackground")

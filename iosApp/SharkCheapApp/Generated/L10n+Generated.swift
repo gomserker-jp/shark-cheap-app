@@ -16,6 +16,14 @@ internal enum L10n {
     /// Search by game title
     internal static let placeholder = L10n.tr("Localizable", "search.placeholder", fallback: "Search by game title")
   }
+  internal enum SearchDetail {
+    internal enum Favorite {
+      /// Favorited
+      internal static let alreadyDid = L10n.tr("Localizable", "search_detail.favorite.already_did", fallback: "Favorited")
+      /// Favorite
+      internal static let title = L10n.tr("Localizable", "search_detail.favorite.title", fallback: "Favorite")
+    }
+  }
   internal enum StoreDeal {
     /// Deals On Store highlights deals with a Metacritic score of 80 or higher and a discount of 30%% or more from each store.
     /// 
