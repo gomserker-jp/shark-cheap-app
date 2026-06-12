@@ -1,5 +1,5 @@
 //
-//  SearchListCellThumb.swift
+//  CommonListCellThumb.swift
 //  SharkCheapApp
 //
 //  Created by Gomserker on 2026/06/08.
@@ -8,11 +8,11 @@
 import Kingfisher
 import SwiftUI
 
-struct SearchListCellThumb: View {
+struct CommonListCellThumb: View {
     let imageURL: URL?
     let width: CGFloat
     let height: CGFloat
-    
+
     var body: some View {
         KFImage(imageURL)
             .placeholder {
@@ -27,7 +27,7 @@ struct SearchListCellThumb: View {
 }
 
 #Preview {
-    SearchListCellThumb(
+    CommonListCellThumb(
         imageURL: URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/capsule_231x87.jpg"),
         width: 120,
         height: 100)

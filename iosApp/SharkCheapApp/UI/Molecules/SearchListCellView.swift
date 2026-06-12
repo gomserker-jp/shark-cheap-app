@@ -24,7 +24,7 @@ struct SearchListCellView: View {
             }
 
             HStack(spacing: 16) {
-                SearchListCellThumb(imageURL: thumb, width: 80, height: 60)
+                CommonListCellThumb(imageURL: thumb, width: 80, height: 60)
 
                 SearchListTitleLabel(title: external)
 
